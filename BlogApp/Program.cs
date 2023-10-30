@@ -1,19 +1,30 @@
+using BlogApp.Data.Abstract;
+using BlogApp.Data.Concrete;
 using BlogApp.Data.Concrete.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container. controller calismasi icin 
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddDbContext<BlogContext>(opt=>opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));//Diger yontem asagidaki gibi
+//builder.Services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnection")));//Diger yontem asagidaki gibi
 builder.Services.AddDbContext<BlogContext>(opt =>
 {
     var config = builder.Configuration;
     var connectionString = config.GetConnectionString("DefaultConnection");
     opt.UseSqlite(connectionString);
+    //MySql db
+    //var connectionMysql = config.GetConnectionString("MySqlConnection");
+
+    //opt.UseMySQL(connectionMysql);
 });
+
+#region Dependency injection
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,7 +37,7 @@ if (!app.Environment.IsDevelopment())
 SeedData.TestVerileriniDoldur(app);
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles();//wwwroot altindaki dosyalari aktif etme
 
 app.UseRouting();
 

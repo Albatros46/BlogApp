@@ -27,5 +27,11 @@ namespace BlogApp.Data.Concrete.EfCore
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseMySQL("server=localhost;database=mydatabase;user=root;password=12345");
+        //}
+
     }
 }

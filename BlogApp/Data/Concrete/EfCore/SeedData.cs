@@ -49,6 +49,7 @@ namespace BlogApp.Data.Concrete.EfCore
                                 IsActive = true,
                                 PublishedOn = DateTime.Now.AddDays(-10),
                                 Tags = context.Tags.Take(3).ToList(),
+                                Image = "1.jpg",
                                 UserId = 1
                             },
                             new Post
@@ -59,6 +60,8 @@ namespace BlogApp.Data.Concrete.EfCore
                                 IsActive = true,
                                 PublishedOn = DateTime.Now.AddDays(-5),
                                 Tags = context.Tags.Take(2).ToList(),
+                                Image = "2.jpg",
+
                                 UserId = 3
                             },
                             new Post
@@ -69,9 +72,11 @@ namespace BlogApp.Data.Concrete.EfCore
                                 IsActive = true,
                                 PublishedOn = DateTime.Now.AddDays(-3),
                                 Tags = context.Tags.Take(4).ToList(),
+                                Image = "3.jpg",
+
                                 UserId = 2
                             }
-                        ) ;
+                        ); ; ;
                     context.SaveChanges();
                 }
             }
