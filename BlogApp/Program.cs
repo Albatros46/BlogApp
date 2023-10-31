@@ -23,6 +23,9 @@ builder.Services.AddDbContext<BlogContext>(opt =>
 
 #region Dependency injection
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 #endregion
 
 var app = builder.Build();
