@@ -9,13 +9,13 @@ namespace BlogApp.Controllers
     {
         
         private IPostRepository _postRepository;
-        private ITagRepository _tagRepository;
+       
 
-        public PostController( IPostRepository postRepository, ITagRepository tagRepository)
+        public PostController( IPostRepository postRepository)
         {
            
             _postRepository = postRepository;
-            _tagRepository = tagRepository;
+            
         }
 
         public IActionResult Index()
@@ -24,7 +24,7 @@ namespace BlogApp.Controllers
                     new PostsViewModel
                     {
                         Posts= _postRepository.Posts.ToList(),
-                        Tags= _tagRepository.Tags.ToList(),
+                        
                     }
                 );
         }
