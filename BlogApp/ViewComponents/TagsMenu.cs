@@ -1,5 +1,6 @@
 ﻿using BlogApp.Data.Abstract;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp.ViewComponents
 {
@@ -14,12 +15,12 @@ namespace BlogApp.ViewComponents
             _tagRepository = tagRepository;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task< IViewComponentResult> InvokeAsync()
         {
             //  return View("Test.cshtml",_tagRepository.Tags.ToList());
             //Eger Views/Shared/Components/TagsMenu/Test.cshtml altindaki farkli cshtml kullanmak isterseniz parametre olarak yazmalisiniz.
 
-            return View(_tagRepository.Tags.ToList());
+            return View(await _tagRepository.Tags.ToListAsync());
         }
     }
 }

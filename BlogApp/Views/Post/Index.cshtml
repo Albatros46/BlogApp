@@ -37,7 +37,8 @@
     <div class="col-lg-4">
        <!--ViewComponents den veri kullanma islemi -->
        @*  <vc:[tags-menu]></vc:[tags-menu]> *@<!--1.Yöntem TagHelpers TagsMenu componenti icin vc:tags-menu yazarak -->
-        @await Component.InvokeAsync("TagsMenu")
+        @await Component.InvokeAsync("TagsMenu") 
+        @await Component.InvokeAsync("NewPosts")
     </div>
 </div>
 
