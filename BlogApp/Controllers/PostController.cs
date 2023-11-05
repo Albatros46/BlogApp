@@ -1,5 +1,6 @@
 ﻿using BlogApp.Data.Abstract;
 using BlogApp.Data.Concrete.EfCore;
+using BlogApp.Entities;
 using BlogApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,13 @@ namespace BlogApp.Controllers
     {
         
         private IPostRepository _postRepository;
-       
+        private ICommentRepository _commentRepository;
 
-        public PostController( IPostRepository postRepository)
+        public PostController(IPostRepository postRepository, ICommentRepository commentRepository)
         {
-           
+
             _postRepository = postRepository;
-            
+            _commentRepository = commentRepository;
         }
 
         public async Task<IActionResult> Index(string tag)
@@ -44,6 +45,28 @@ namespace BlogApp.Controllers
                 .Include(x => x.Comments)//Comments lere gidildikten sonra
                 .ThenInclude(x => x.User)//Comments icindeki user bilgisi de cekilecek
                 .FirstOrDefaultAsync(p=>p.Url==url));
+        }
+        [HttpPost]
+        public JsonResult AddComment(int PostId, string UserName, string Text)
+        {//Jquery kullanarak yazilan yorumu direkt sayfa icerisinde gosterme islemi. Details.cshtml de javaScrit kodlarini yazacagiz.
+            var entity = new Comment
+            {
+                Text = Text,
+                PublisedOn = DateTime.Now,
+                PostId = PostId,
+                
+                User = new User { UserName = UserName, Image = "p1.jpg" }
+            };
+            _commentRepository.CreateComment(entity);
+            //return RedirectToAction("post_details", new { url = Url });
+            //return View();
+            return Json(new
+            {//Details sayfasindaki script alaninda t
+                UserName,
+                Text,
+                entity.PublisedOn,
+                entity.User.Image
+            });
         }
     }
 }

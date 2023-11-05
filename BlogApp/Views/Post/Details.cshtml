@@ -22,24 +22,48 @@
         <div class="bg-white mt-3">
             <div class="card border-0">
                 <div cite="card-hedar pb-0">
-                    <h4>@Model.Comments.Count() adet yorum yapildi!</h4>
+                    <h4><span id="commentCount">@Model.Comments.Count()</span>  adet yorum yapildi!</h4>
                 </div>
                 <div class="card-body">
-                    @foreach (var comments in Model.Comments)
-                    {
-                        <div class="my-4 d-flex">
-                            <img src="/img/@comments.User.Image" class="avatar rounded-circle float-start me-3" />
-                            <div>
-                                <div class="mb-2">
-                                    <h6>@comments.User.UserName</h6>
-                                    <span>@comments.PublisedOn</span>
+                    <div id="comments">
+                        <!--Eger yorum girilirse direkt DB den alinip sayfada görünmesini saylayacagiz.
+                        Asagidaki script ile erisim sayfa dinamik olarak güncel görünecek-->
+                        @foreach (var comments in Model.Comments)
+                        {
+                            <div class="my-4 d-flex">
+                                <img src="/img/@comments.User.Image" class="avatar rounded-circle float-start me-3" />
+                                <div>
+                                    <div class="mb-2">
+                                        <h6>@comments.User.UserName</h6>
+                                        <small>@comments.PublisedOn</small>
+                                    </div>
+                                    <p>@comments.Text</p>
                                 </div>
-                                <p>@comments.Text</p>
                             </div>
-                          
-                        </div> 
-                    }
-                   
+                        }
+                    </div>
+                  
+                    <hr class="my-4" />
+                    <!--Yorum formu-->
+                    <div>
+                        <h4 class="mb-3">Yorum Ekle</h4>
+                        <form action="/post/AddComment" method="post">
+                            <!--action="/posts/AddComment"-->
+                            <input type="hidden" id="PostId" name="PostId" value="@Model.PostId" />
+                            <div class="mb-3">
+                                <label for="UserName" class="form-label">Username</label>
+                                <input type="text" name="UserName" placeholder="Username" id="UserName" class="form-control"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Text" class="form-label">Yorum</label>
+                                <textarea type="text" name="Text" placeholder="Yorum" id="Text" rows="3" class="form-control" ></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <button id="btnYorumGonder" type="submit" class="btn btn-primary">Gönder</button>
+                                <!--asagidaki script in calisabilmesi icin id ile oradan erisim saglanmali-->
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,3 +75,51 @@
         @await Component.InvokeAsync("NewPosts")
     </div>
 </div>
+@section Scripts{
+    <!--jquery kütüphanesi
+        https://releases.jquery.com/
+    -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+            //sayfadaki butun bilesenler yüklendikten sonra sayfa calisacak.
+            $("#btnYorumGonder").click(function () {
+                $.ajax({
+                    type:'POST',
+                    url: '@Url.Action("AddComment")',
+                    dataType:'json',
+                    data: {
+                        //Controller deki AddComment Actiondan gonderilen parametreler tanimlanacak.ve actiondaki parametrelerde birebir aynisi olmak zorunda
+                        PostId: $('#PostId').val(),
+                        UserName: $('#UserName').val(),
+                        Text: $('#Text').val(),
+                    },
+                    success: function (yorum) { 
+                        var date = new Date(yorum.publisedOn); //kisa tarih göstermek icin yapiyoruz
+                       // console.log(yorum);
+                         $("#comments").append(`
+                                     <div class="my-4 d-flex">
+                                     <img src="/img/${yorum.image}" class="avatar rounded-circle float-start me-3" />
+                                        <div>
+                                            <div class="mb-2">
+                                            <h6>${ yorum.userName }  </h6>
+                                            <small> ${ date.toLocaleDateString() } </small>
+                        
+                                            </div>
+                                            <p> ${ yorum.text } </p>
+                                        </div>
+                                    </div>
+                        `);
+                        // daha sonra input kutularini bosaltmis olmamiz gerek
+                                $(#UserName).val('');
+                                $(#Text).val('');
+                        var adet = parseInt($('#commentCount').text()) ;
+                        $('#commentCount').text(adet + 1);
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+}

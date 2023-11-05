@@ -51,7 +51,7 @@ app.UseAuthorization();
 //post details Url
 app.MapControllerRoute(
     name: "post_details",
-    pattern: "posts/{url}", //daha sonra index.cshtml de link verirken <a href="/posts/@post.Url" </a>
+    pattern: "posts/details/{url}", //daha sonra index.cshtml de link verirken <a href="/posts/@post.Url" </a>
     defaults:new {Controller= "Post",Action= "Details" }
     );
 //tag url
