@@ -1,0 +1,53 @@
+﻿@model Post
+
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="bg-white p-4">
+            <h1 class="h4 mb-4">@Model.Title</h1>
+            <!--post a ait tag larin renkliolarak listelenmesi-->
+            <div class="tags">
+                @foreach (var item in Model.Tags)
+                {
+                    <a href="/posts/tags/@item.Url" class="badge bg-@item.Color bg-opacity-10 text-@item.Color mb-2 fw-bold">@item.Text</a>
+                }
+            </div>
+          
+            <img src="~/img/@Model.Image" class="img-fluid rounded" alt="" />
+            <div>
+                @Model.Content
+            </div>
+        </div>
+        <!--post a ait yorumlarin listelenmesi-->
+        <div class="bg-white mt-3">
+            <div class="card border-0">
+                <div cite="card-hedar pb-0">
+                    <h4>@Model.Comments.Count() adet yorum yapildi!</h4>
+                </div>
+                <div class="card-body">
+                    @foreach (var comments in Model.Comments)
+                    {
+                        <div class="my-4 d-flex">
+                            <img src="/img/@comments.User.Image" class="avatar rounded-circle float-start me-3" />
+                            <div>
+                                <div class="mb-2">
+                                    <h6>@comments.User.UserName</h6>
+                                    <span>@comments.PublisedOn</span>
+                                </div>
+                                <p>@comments.Text</p>
+                            </div>
+                          
+                        </div> 
+                    }
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <!--ViewComponents den veri kullanma islemi -->
+        @*  <vc:[tags-menu]></vc:[tags-menu]> *@<!--1.Yöntem TagHelpers TagsMenu componenti icin vc:tags-menu yazarak -->
+        @await Component.InvokeAsync("TagsMenu")
+        @await Component.InvokeAsync("NewPosts")
+    </div>
+</div>

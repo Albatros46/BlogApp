@@ -1,6 +1,7 @@
 using BlogApp.Data.Abstract;
 using BlogApp.Data.Concrete;
 using BlogApp.Data.Concrete.EfCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -46,8 +47,23 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+//https://localhost:7215/posts/AspNet-Core    gibi bir url hazirlanmasini saglayacagiz.
+//post details Url
+app.MapControllerRoute(
+    name: "post_details",
+    pattern: "posts/{url}", //daha sonra index.cshtml de link verirken <a href="/posts/@post.Url" </a>
+    defaults:new {Controller= "Post",Action= "Details" }
+    );
+//tag url
+app.MapControllerRoute(
+    name:"post-by-tag",
+    pattern: "posts/tags/{tag}", //index action da string tag olarak parametre eklenecek
+     defaults: new { Controller = "Post", Action = "Index" }
+    );
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
 
 app.Run();

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BlogApp.ViewComponents
 {
     public class NewPosts: ViewComponent
-    {
+    {//https://learn.microsoft.com/en-us/aspnet/core/mvc/views/view-components?view=aspnetcore-7.0#invoke-a-view-component-as-a-tag-helper-1
         private IPostRepository _postRepository;
 
         public NewPosts(IPostRepository postRepository)

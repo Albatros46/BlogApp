@@ -13,6 +13,7 @@ namespace BlogApp.Entities
         public int PostId { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
+        public string? Url { get; set; }//url de id ile gorunmesi yerine url uzantisi ekleyerek goruntulenmesini saglayacagiz.
         public string? Image { get; set; }
         public DateTime PublishedOn { get; set; }
         public bool IsActive { get; set; }
