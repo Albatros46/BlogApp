@@ -5,24 +5,18 @@
 namespace BlogApp.Migrations
 {
     /// <inheritdoc />
-    public partial class TagColorColumnn : Migration
+    public partial class UserTableUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Colors",
-                table: "Tags",
-                newName: "Color");
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Color",
-                table: "Tags",
-                newName: "Colors");
+
         }
     }
 }

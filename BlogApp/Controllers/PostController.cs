@@ -50,7 +50,7 @@ namespace BlogApp.Controllers
         public JsonResult AddComment(int PostId, string UserName, string Text)
         {//Jquery kullanarak yazilan yorumu direkt sayfa icerisinde gosterme islemi. Details.cshtml de javaScrit kodlarini yazacagiz.
             var entity = new Comment
-            {
+            { //JsonResult
                 Text = Text,
                 PublisedOn = DateTime.Now,
                 PostId = PostId,
