@@ -1,6 +1,7 @@
 using BlogApp.Data.Abstract;
 using BlogApp.Data.Concrete;
 using BlogApp.Data.Concrete.EfCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,17 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container. controller calismasi icin 
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnection")));//Diger yontem asagidaki gibi
-builder.Services.AddDbContext<BlogContext>(opt =>
-{
-    var config = builder.Configuration;
-    var connectionString = config.GetConnectionString("DefaultConnection");
-    opt.UseSqlite(connectionString);
-    //MySql db
-    //var connectionMysql = config.GetConnectionString("MySqlConnection");
+builder.Services.AddDbContext<BlogContext>(opt => opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));//Diger yontem asagidaki gibi
+//builder.Services.AddDbContext<BlogContext>(opt =>
+//{
+//    var config = builder.Configuration;
+//    var connectionString = config.GetConnectionString("DefaultConnection");
+//    opt.UseSqlite(connectionString);
+//    //MySql db
+//    //var connectionMysql = config.GetConnectionString("MySqlConnection");
 
-    //opt.UseMySQL(connectionMysql);
-});
+//    //opt.UseMySQL(connectionMysql);
+//});
 
 #region Dependency injection
 builder.Services.AddScoped<IPostRepository, PostRepository>();
@@ -28,8 +29,13 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 #endregion
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();//Uygulamaya üye olduktan sonra browserde cookie ile Authentication edilmesini aktif ediyoruz
 
 var app = builder.Build();
+
+app.UseRouting();//CookieAuthenticationDefaults calistirabilmek icin gerekli
+app.UseAuthentication();//yukaridaki CookieAuthenticationDefaults uygulamada aktif edilmesi saglandi
+app.UseAuthorization();// ve uygulamanin belli bölümlerini kullanmayi saglayacak
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
