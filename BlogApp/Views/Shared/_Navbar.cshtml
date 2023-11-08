@@ -8,15 +8,37 @@
         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
             <ul class="navbar-nav flex-grow-1">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area=""  asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i> Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/post/index">Posts</a><!--asp-area="" asp-controller="Post" asp-action="Index"-->
+                    <a class="nav-link text-dark" href="/post/index"><i class="fa-solid fa-blog"></i> Posts</a><!--asp-area="" asp-controller="Post" asp-action="Index"-->
                 </li>
-                <li class="nav-item">
+             @*    <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </li>
+                </li> *@
             </ul>
+            <ul class="navbar-nav ms-auto">
+                @if (User.Identity!.IsAuthenticated)  @* Identity null olamadigini belirtiyoruz Identity!  *@
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa-regular fa-user"></i> @User.Identity.Name</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+                    </li>
+                }else
+                {
+                    <li class="nav-item">
+                      <a class="nav-link" href="/user/login"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a>
+                    </li>
+                }
+                
+                
+               
+            </ul> 
         </div>
     </div>
 </nav>
+<!--sayfada ikon gorunmesi icin 
+    https://fontawesome.com/icons
+-->

@@ -46,7 +46,7 @@ namespace BlogApp.Controllers
                 .ThenInclude(x => x.User)//Comments icindeki user bilgisi de cekilecek
                 .FirstOrDefaultAsync(p=>p.Url==url));
         }
-        [HttpPost]
+  /*      [HttpPost]
         public JsonResult AddComment(int PostId, string UserName, string Text)
         {//Jquery kullanarak yazilan yorumu direkt sayfa icerisinde gosterme islemi. Details.cshtml de javaScrit kodlarini yazacagiz.
             var entity = new Comment
@@ -67,6 +67,21 @@ namespace BlogApp.Controllers
                 entity.PublisedOn,
                 entity.User.Image
             });
+        }
+  */
+        public IActionResult AddComment(int PostId, string UserName, string Text,string Url)
+        {
+            var entity = new Comment
+            {
+                Text = Text,
+                PublisedOn = DateTime.Now,
+                PostId= PostId,
+                User=new User { Name = UserName, Image= "avatar.jpg" }
+            };
+            _commentRepository.CreateComment(entity);
+            //1. Yöntem: Program.cs de root semasindaki name 1.parametre, 2. parametre program.cs deki url kismi yukarida tanimlanan Url ye esitlenecek
+            return RedirectToRoute("post_details",new {url=Url});
+            //return Redirect("/posts/details/"+Url);//Yorum yapildiktan sonra Details.cshtml de input icerisinde hidden type ile url tutuluyor olacak ve o url burada tekrar döndürülecek
         }
     }
 }
