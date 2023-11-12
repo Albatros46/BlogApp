@@ -95,5 +95,34 @@ namespace BlogApp.Controllers
             return RedirectToRoute("post_details",new {url=Url});
             //return Redirect("/posts/details/"+Url);//Yorum yapildiktan sonra Details.cshtml de input icerisinde hidden type ile url tutuluyor olacak ve o url burada tekrar döndürülecek
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(PostCreateViewModel model)
+        {
+            var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (ModelState.IsValid)
+            {
+                _postRepository.CreatePost(
+                    new Post
+                    {
+                        Title=model.Title,
+                        Content=model.Content,
+                        Url=model.Url,
+                        UserId=int.Parse(userId ?? ""),
+                        PublishedOn=DateTime.Now,
+                        Image="1.jpg",
+                        IsActive=false,
+
+                    });
+                return RedirectToAction("Index");
+            }
+           
+            return View(model);
+        }
     }
 }

@@ -45,6 +45,7 @@ namespace BlogApp.Data.Concrete.EfCore
                             {
                                 PostId = 1,
                                 Title = "Asp.Net Core 7.0",
+                                Description = "Asp.Net Core 7.0 hakkinda ögrenmek isteginiz hersey",
                                 Content = "Asp.Net core Dersleri",
                                 Url = "asp-net-core",
                                 IsActive = true,
@@ -62,6 +63,8 @@ namespace BlogApp.Data.Concrete.EfCore
                             {
                                 PostId = 2,
                                 Title = "Java Spring Boot",
+                                Description = "Java Spring boot hakkinda ögrenmek isteginiz hersey",
+
                                 Content = "Java Spring Boot ile Web programlama dersleri",
                                 Url = "java-spring-boot",
 
@@ -76,6 +79,8 @@ namespace BlogApp.Data.Concrete.EfCore
                             {
                                 PostId = 3,
                                 Title = "Python Programlama",
+                                Description = "Python hakkinda ögrenmek isteginiz hersey",
+
                                 Content = "Python Pandas, numpy ve Django Dersleri",
                                 Url = "python-programlama",
 
@@ -90,6 +95,8 @@ namespace BlogApp.Data.Concrete.EfCore
                              {
                                  PostId = 4,
                                  Title = "C++ Programlama",
+                                 Description = "c++ hakkinda ögrenmek isteginiz hersey",
+
                                  Content = "C++ ile programlama",
                                  Url = "C-ile-programlama",
 
