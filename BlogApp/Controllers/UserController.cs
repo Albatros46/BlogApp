@@ -1,8 +1,10 @@
 ﻿using BlogApp.Data.Abstract;
 using BlogApp.ViewModels;
+using BlogApp.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -25,6 +27,8 @@ namespace BlogApp.Controllers
             }
             return View();
         }
+
+
        
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -71,6 +75,36 @@ namespace BlogApp.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index","Home");
+        }
+
+        public IActionResult Register()
+        {
+           return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userRepository.Users.FirstOrDefaultAsync(x=>x.UserName==model.UserName || x.Email==model.Email);
+                if (user == null)
+                {
+                    _userRepository.CreateUser(new User 
+                    { 
+                        UserName= model.UserName,
+                        Name= model.Name,
+                        Email=model.Email,
+                        Password=model.Password,
+                        Image="avatar.jpg"
+                    });
+                }
+                else
+                {
+                    ModelState.AddModelError("","Usernae yada E-Mail kullaniliyor!");
+                }
+                return RedirectToAction("Login", "User");
+            }
+            return View(model);
         }
     }
 }

@@ -1,0 +1,47 @@
+﻿@using BlogApp.ViewModels
+@model RegisterViewModel
+
+
+
+<div class="row">
+    <div class="col-12">
+        <h1>Register</h1>
+    </div>
+    <div class="bg-white p-4">
+        <form class="mt-3" action="Register" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger">
+                <!--ModelOnly:Model seviyesindeki hatalari gosterecek.All bütün hatalari yazar-->
+
+            </div>
+            <div class="mb-3">
+                <label asp-for="UserName" class="form-label"></label>
+                <input type="email" asp-for="UserName" name="UserName" id="UserName" class="form-control" placeholder="Username" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input type="email" asp-for="Name" name="Name" id="Name" class="form-control" placeholder="First Name and Last Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input type="email" asp-for="Email" name="Email" id="Email" class="form-control" placeholder="E-Mail" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input type="password" asp-for="Password" name="Password" id="Password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+            </div>
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input type="password" asp-for="ConfirmPassword" name="ConfirmPassword" id="ConfirmPassword" class="form-control" placeholder="Password again!" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+            </div>
+            <button class="btn btn-primary" type="submit">Register</button>
+        </form>
+    </div>
+
+</div>
