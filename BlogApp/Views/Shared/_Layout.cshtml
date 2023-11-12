@@ -16,14 +16,14 @@
   
         @await Html.PartialAsync("_Navbar")
     
-    <div class="container mt-3">
+    <div class="container mt-3 mb-3">
 
             @RenderBody()
 
     </div>
-
-    <footer class="border-top footer text-muted mt-3">
-        <div class="container">
+    @*  *@
+    <footer class="border-top footer  mt-3">
+        <div class="container mt-2">
             &copy; @DateTime.Now.Year - BlogApp - <a href="https://github.com/Albatros46/BlogApp">Albatros46</a>
         </div>
 

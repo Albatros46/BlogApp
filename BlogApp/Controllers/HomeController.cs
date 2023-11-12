@@ -16,7 +16,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var claims=User.Claims;
+        //var claims=User.Claims;
 
         return View();
     }

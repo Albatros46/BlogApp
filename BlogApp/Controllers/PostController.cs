@@ -4,6 +4,7 @@ using BlogApp.Entities;
 using BlogApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BlogApp.Controllers
 {
@@ -21,7 +22,8 @@ namespace BlogApp.Controllers
         }
 
         public async Task<IActionResult> Index(string tag)
-        {
+        { 
+            var claims = User.Claims;
             var post = _postRepository.Posts;
 
             if (!string.IsNullOrEmpty(tag))
@@ -46,37 +48,47 @@ namespace BlogApp.Controllers
                 .ThenInclude(x => x.User)//Comments icindeki user bilgisi de cekilecek
                 .FirstOrDefaultAsync(p=>p.Url==url));
         }
-  /*      [HttpPost]
-        public JsonResult AddComment(int PostId, string UserName, string Text)
-        {//Jquery kullanarak yazilan yorumu direkt sayfa icerisinde gosterme islemi. Details.cshtml de javaScrit kodlarini yazacagiz.
-            var entity = new Comment
-            { //JsonResult
-                Text = Text,
-                PublisedOn = DateTime.Now,
-                PostId = PostId,
-                
-                User = new User { UserName = UserName, Image = "p1.jpg" }
-            };
-            _commentRepository.CreateComment(entity);
-            //return RedirectToAction("post_details", new { url = Url });
-            //return View();
-            return Json(new
-            {//Details sayfasindaki script alaninda t
-                UserName,
-                Text,
-                entity.PublisedOn,
-                entity.User.Image
-            });
-        }
-  */
+
+        //[HttpPost]
+        //public JsonResult AddComment(int PostId,  string Text)
+        //{//Jquery kullanarak yazilan yorumu direkt sayfa icerisinde gosterme islemi. Details.cshtml de javaScrit kodlarini yazacagiz.
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    var userName = User.FindFirstValue(ClaimTypes.Name);
+        //    var avatar = User.FindFirstValue(ClaimTypes.UserData);
+        //    var entity = new Comment
+        //    { //JsonResult
+        //        Text = Text,
+        //        PublisedOn = DateTime.Now,
+        //        PostId = PostId,
+
+        //        UserId=int.Parse(userId ?? "")
+        //    };
+        //    _commentRepository.CreateComment(entity);
+        //    //return RedirectToAction("post_details", new { url = Url });
+        //    //return View();
+        //    return Json(new
+        //    {//Details sayfasindaki script alaninda t
+        //        userName,
+        //        Text,
+        //        entity.PublisedOn,
+        //        avatar
+        //    });
+        //}
+        [HttpPost]
         public IActionResult AddComment(int PostId, string UserName, string Text,string Url)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userName = User.FindFirstValue(ClaimTypes.Name);
+            var avatar = User.FindFirstValue(ClaimTypes.UserData);
+
             var entity = new Comment
             {
                 Text = Text,
                 PublisedOn = DateTime.Now,
-                PostId= PostId,
-                User=new User { Name = UserName, Image= "avatar.jpg" }
+                PostId = PostId,
+
+                UserId = int.Parse(userId ?? ""),
+                
             };
             _commentRepository.CreateComment(entity);
             //1. Yöntem: Program.cs de root semasindaki name 1.parametre, 2. parametre program.cs deki url kismi yukarida tanimlanan Url ye esitlenecek

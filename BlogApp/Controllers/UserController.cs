@@ -27,7 +27,6 @@ namespace BlogApp.Controllers
         }
        
         [HttpPost]
-       
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -39,6 +38,7 @@ namespace BlogApp.Controllers
                     userClaims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()));//NameIdentifier model de id ye karsilik geldigi icin secildi. ve bu deger string olarak saklanir.
                     userClaims.Add(new Claim(ClaimTypes.Name, user.UserName ?? ""));
                     userClaims.Add(new Claim(ClaimTypes.GivenName, user.Name ?? ""));
+                    userClaims.Add(new Claim(ClaimTypes.UserData, user.Image ?? ""));
 
                     if (user.Email == "info@sakcadag.com")
                     {
