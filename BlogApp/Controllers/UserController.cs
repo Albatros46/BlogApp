@@ -44,7 +44,7 @@ namespace BlogApp.Controllers
                     userClaims.Add(new Claim(ClaimTypes.GivenName, user.Name ?? ""));
                     userClaims.Add(new Claim(ClaimTypes.UserData, user.Image ?? ""));
 
-                    if (user.Email == "info@sakcadag.com")
+                    if (user.Email == "albatros@gmail.com")
                     {
                         userClaims.Add(new Claim(ClaimTypes.Role, "Admin"));
                     }

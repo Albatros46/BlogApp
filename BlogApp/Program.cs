@@ -29,7 +29,12 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 #endregion
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();//Uygulamaya üye olduktan sonra browserde cookie ile Authentication edilmesini aktif ediyoruz
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(opt =>
+    {//giris yapilmadan islem yapilacagi zaman gitmesini istedigimiz sayfaya yönlendiriyoruz
+        opt.LoginPath = "/user/login";
+        opt.LogoutPath= "/";
+    });//Uygulamaya üye olduktan sonra browserde cookie ile Authentication edilmesini aktif ediyoruz
 
 var app = builder.Build();
 

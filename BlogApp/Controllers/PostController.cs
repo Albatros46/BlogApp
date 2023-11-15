@@ -2,6 +2,7 @@
 using BlogApp.Data.Concrete.EfCore;
 using BlogApp.Entities;
 using BlogApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -95,13 +96,14 @@ namespace BlogApp.Controllers
             return RedirectToRoute("post_details",new {url=Url});
             //return Redirect("/posts/details/"+Url);//Yorum yapildiktan sonra Details.cshtml de input icerisinde hidden type ile url tutuluyor olacak ve o url burada tekrar döndürülecek
         }
-
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(PostCreateViewModel model)
         {
             var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -122,6 +124,68 @@ namespace BlogApp.Controllers
                 return RedirectToAction("Index");
             }
            
+            return View(model);
+        }
+
+        [Authorize]
+        public async Task< IActionResult> List()
+        {
+            //UserController de ki gibi kullanici nin Claims i kontrol edilir. Eger kullanici admin claims i birakmis ise
+            //butun postlari gorsün admin degilse sadece kendi postlarini listelesin
+            var userId =int.Parse( User.FindFirstValue(ClaimTypes.NameIdentifier)?? "");
+            var role = User.FindFirstValue(ClaimTypes.Role);
+
+            var posts = _postRepository.Posts;
+
+            if (string.IsNullOrEmpty(role))
+            {
+                posts = posts.Where(i => i.UserId == userId);
+            }
+
+            return View(await posts.ToListAsync());
+        }
+        [Authorize]
+        public IActionResult Edit (int? id)
+        {
+            if (id==null)
+            {
+                return NotFound();
+            }
+            var post = _postRepository.Posts.FirstOrDefault(i => i.PostId == id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return View(new PostCreateViewModel
+            {
+                PostId=post.PostId,
+                Title=post.Title,
+                Content=post.Content,
+                Description=post.Description,
+                Url=post.Url,
+                IsActive = post.IsActive,
+            });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Edit(PostCreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var entityToUpdate = new Post
+                {
+                    PostId = model.PostId,
+                    Title = model.Title,
+                    Content = model.Content,
+                    Description = model.Description,
+                    Url = model.Url,
+                    IsActive = model.IsActive,
+                };
+                _postRepository.EditPost(entityToUpdate);
+                return RedirectToAction("List");
+            }
             return View(model);
         }
     }
