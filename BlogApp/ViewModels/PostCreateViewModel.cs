@@ -17,6 +17,6 @@ namespace BlogApp.ViewModels
     //    public string? Image { get; set; }
     //    public DateTime PublishedOn { get; set; }
         public bool IsActive { get; set; }
-    //    public List<Tag> Tags { get; set; } = new List<Tag>();//Bir yorum birden fazla tag alabilir.
+        public List<Tag> Tags { get; set; } = new List<Tag>();//Bir yorum birden fazla tag alabilir.
     }
 }

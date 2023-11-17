@@ -26,7 +26,7 @@
               <ul class="list-group">
                 @foreach(var comment in @Model.Comments)
                 {
-                     <li class="list-group-item"><i class="bi bi-chat-right-dots-fill"></i> @comment.Text </li>
+                     <li class="list-group-item"><i class="bi bi-chat-right-dots-fill">@comment.Text</i> <u>[@comment.Post.Title]</u>  </li>
                 }
             </ul>
           </div>
