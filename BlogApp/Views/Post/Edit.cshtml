@@ -31,10 +31,10 @@
                 <textarea asp-for="Content" name="Content" id="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            @if(User.FindFirstValue(ClaimTypes.Role)=="admin"){
+            @if(User.FindFirstValue(ClaimTypes.Role)=="Admin"){
                 <div class="form-check-input mb-3">
                     <input asp-for="IsActive" class="form-check-input" />
-                    <input asp-for="IsActive" class="form-check-label" />
+                    <label asp-for="IsActive" class="form-check-label"></label>
                 </div>
             }
             <button class="btn btn-primary" type="submit">Edit</button>

@@ -71,7 +71,12 @@ app.MapControllerRoute(
     pattern: "posts/tags/{tag}", //index action da string tag olarak parametre eklenecek
      defaults: new { Controller = "Post", Action = "Index" }
     );
-
+//user profil
+app.MapControllerRoute(
+    name: "user_profile",
+    pattern: "profile/{username}", //index action da string tag olarak parametre eklenecek
+     defaults: new { Controller = "User", Action = "Profile" }
+    );
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogApp.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20231105220415_NeueMigration")]
-    partial class NeueMigration
+    [Migration("20231115193625_UserTableUpdate")]
+    partial class UserTableUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,9 @@ namespace BlogApp.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
@@ -118,6 +121,9 @@ namespace BlogApp.Migrations
 
                     b.Property<string>("Password")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Rol")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("UserName")
                         .HasColumnType("TEXT");

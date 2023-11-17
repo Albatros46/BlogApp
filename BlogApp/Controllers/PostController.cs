@@ -44,9 +44,10 @@ namespace BlogApp.Controllers
         {//Herhangi bir Url ile Detay sayfasina gidildiginde o detaya sayfasina ait yorumlari da getirecek
             return View(await _postRepository
                 .Posts
+                .Include(x=>x.User)//o post u kim yayinladi.(post u yayinlayan user i goster)
                 .Include(x => x.Tags)
                 .Include(x => x.Comments)//Comments lere gidildikten sonra
-                .ThenInclude(x => x.User)//Comments icindeki user bilgisi de cekilecek
+                .ThenInclude(x => x.User)//Comments icindeki user bilgisi de cekilecek(yorumu yapan kullaniciyi goster.)
                 .FirstOrDefaultAsync(p=>p.Url==url));
         }
 
@@ -183,9 +184,17 @@ namespace BlogApp.Controllers
                     Url = model.Url,
                     IsActive = model.IsActive,
                 };
+               
+                if (User.FindFirstValue(ClaimTypes.Role)=="Admin")
+                {
+                    entityToUpdate.IsActive = model.IsActive;
+                }
+                
+
                 _postRepository.EditPost(entityToUpdate);
                 return RedirectToAction("List");
             }
+           
             return View(model);
         }
     }
